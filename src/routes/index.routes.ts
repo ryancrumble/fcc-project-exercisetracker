@@ -1,5 +1,5 @@
-import IndexController from '../controllers/index.controllers.js';
 import { Router } from 'express';
+import IndexController from '../controllers/index.controllers.js';
 import { Routes } from '../types/routes.js';
 
 class IndexRoutes implements Routes {

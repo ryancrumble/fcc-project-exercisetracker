@@ -1,9 +1,9 @@
-import { Routes } from './types/routes.js';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import { publicDir } from './config/index.js';
+import { Routes } from './types/routes.js';
 
 dotenv.config();
 

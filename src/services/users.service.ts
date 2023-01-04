@@ -1,6 +1,6 @@
 import { HttpException } from '../errors/HTTPException.js';
-import { User } from '../types/users.js';
 import userModel from '../models/users.models.js';
+import { User } from '../types/users.js';
 
 class UsersService {
     public users: typeof userModel;

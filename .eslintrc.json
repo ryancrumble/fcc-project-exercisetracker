@@ -22,7 +22,6 @@
     "no-unused-vars": "error",
     "prettier/prettier": [
       "error"
-    ],
-    "sort-imports": "warn"
+    ]
   }
 }

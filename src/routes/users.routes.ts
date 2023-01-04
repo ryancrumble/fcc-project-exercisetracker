@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { Routes } from '../types/routes.js';
 import UsersControllers from '../controllers/users.controllers.js';
+import { Routes } from '../types/routes.js';
 
 class UsersRoute implements Routes {
     public path = '/api/users';

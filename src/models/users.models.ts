@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { User } from '../types/users.js';
 
 const userSchema: Schema = new Schema({
