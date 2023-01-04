@@ -8,7 +8,7 @@ class UsersControllers {
         this.userService = new UserService();
     }
 
-    public createUser = async (
+    public addUser = async (
         req: Request,
         res: Response,
         next: NextFunction
@@ -20,6 +20,35 @@ class UsersControllers {
             );
 
             res.status(200).json(createUserData);
+        } catch (error) {
+            next(error);
+        }
+    };
+    public getUserById = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const userId = req.params._id;
+
+            const userData = await this.userService.getUserById(userId);
+
+            res.status(200).json(userData);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    public getUsers = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const usersData = await this.userService.getUsers();
+
+            res.status(200).json(usersData);
         } catch (error) {
             next(error);
         }

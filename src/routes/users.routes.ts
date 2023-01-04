@@ -12,7 +12,9 @@ class UsersRoute implements Routes {
     }
 
     private initializeRoutes() {
-        this.router.post(this.path, this.usersController.createUser);
+        this.router.post(this.path, this.usersController.addUser);
+        this.router.get(this.path, this.usersController.getUsers);
+        this.router.get(this.path + '/:_id', this.usersController.getUserById);
     }
 }
 

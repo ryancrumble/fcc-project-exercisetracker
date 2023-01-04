@@ -1,4 +1,4 @@
-import { Document, Schema, model } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { User } from '../types/users.js';
 
 const userSchema: Schema = new Schema({
@@ -9,6 +9,6 @@ const userSchema: Schema = new Schema({
     },
 });
 
-const userModel = model<User & Document>('User', userSchema);
+const userModel = model<User>('User', userSchema);
 
 export default userModel;

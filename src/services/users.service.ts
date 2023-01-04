@@ -25,6 +25,28 @@ class UsersService {
 
         return await this.users.create(payload);
     }
+
+    public async getUserById(payload: string): Promise<User> {
+        // @TODO Validate payload
+
+        const user = await this.users.findById(payload);
+
+        if (!user) {
+            throw new HttpException(204, 'No user found');
+        }
+
+        return user;
+    }
+
+    public async getUsers(): Promise<User[]> {
+        const users = await this.users.find();
+
+        if (!users.length) {
+            throw new HttpException(204, 'No users found in the database');
+        }
+
+        return users;
+    }
 }
 
 export default UsersService;
