@@ -28,6 +28,4 @@ Set up four endpoints (two POSTs, two GETs)
 
 Typescript will be a big aid to creating this API.
 
-Also considering trying out [Zod](https://zod.dev/) to create schemas for the
-forms and learning how to
-use this new tool.
+The file structure has been divided to represent an MVC approach.
