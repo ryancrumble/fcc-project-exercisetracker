@@ -13,9 +13,7 @@ class ExercisesService {
         this.exercises = exerciseModel;
     }
 
-    public async createExercise(
-        payload: CreateExerciseRequest
-    ): Promise<ExerciseSchema> {
+    public async createExercise(payload: CreateExerciseRequest) {
         const { description, date } = payload;
 
         if (description.length > 256) {
@@ -37,7 +35,16 @@ class ExercisesService {
             date: date ?? new Date(),
         };
 
-        return await this.exercises.create(newExercise);
+        const res = await this.exercises.create(newExercise);
+
+        // To pass project tests
+        return {
+            _id: res._id,
+            username: res.username,
+            date: res.date.toDateString(),
+            duration: res.duration,
+            description: res.description,
+        };
     }
 
     public async getExercises(username: string, queries: GetExercisesQueries) {
@@ -97,7 +104,14 @@ class ExercisesService {
             throw new HttpException(204, 'No getExercises found for the user');
         }
 
-        return { exercises, count };
+        // Format results to satisfy fcc test
+        const formattedExercises = exercises.map(
+            ({ date, duration, description }) => {
+                return { date: date.toDateString(), duration, description };
+            }
+        );
+
+        return { exercises: formattedExercises, count };
     }
 }
 
