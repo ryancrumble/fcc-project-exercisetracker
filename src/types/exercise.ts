@@ -17,13 +17,6 @@ export interface CreateExerciseResponse extends CreateExerciseRequest {
     username: string;
 }
 
-export interface UserLogsResponse {
-    _id: string;
-    username: string;
-    count: number;
-    log: Exercise[];
-}
-
 export interface GetExercisesQueries {
     from?: string;
     to?: string;

@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { HttpException } from '../errors/HTTPException.js';
 import ExercisesService from '../services/exercises.service.js';
 import UsersService from '../services/users.service.js';
-import { CreateExerciseResponse } from '../types/exercise.js';
 
 class UsersControllers {
     public exercisesService: ExercisesService;
@@ -61,7 +60,7 @@ class UsersControllers {
 
     public createExercise = async (
         req: Request,
-        res: Response<CreateExerciseResponse>,
+        res: Response,
         next: NextFunction
     ) => {
         try {
@@ -79,7 +78,16 @@ class UsersControllers {
                 username: user.username,
             });
 
-            res.status(200).json(exerciseData);
+            // To pass fcc project tests
+            const response = {
+                _id: user._id,
+                username: user.username,
+                date: exerciseData.date.toDateString(),
+                duration: exerciseData.duration,
+                description: exerciseData.description,
+            };
+
+            res.status(200).json(response);
         } catch (error) {
             next(error);
         }

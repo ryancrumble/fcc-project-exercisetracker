@@ -2,7 +2,6 @@ import { HttpException } from '../errors/HTTPException.js';
 import exerciseModel from '../models/exercise.models.js';
 import {
     CreateExerciseRequest,
-    ExerciseSchema,
     GetExercisesQueries,
 } from '../types/exercise.js';
 
@@ -30,21 +29,12 @@ class ExercisesService {
             );
         }
 
-        const newExercise: ExerciseSchema = {
+        const newExercise = {
             ...payload,
-            date: date ?? new Date(),
+            date: date || new Date().toDateString(),
         };
 
-        const res = await this.exercises.create(newExercise);
-
-        // To pass project tests
-        return {
-            _id: res._id,
-            username: res.username,
-            date: res.date.toDateString(),
-            duration: res.duration,
-            description: res.description,
-        };
+        return await this.exercises.create(newExercise);
     }
 
     public async getExercises(username: string, queries: GetExercisesQueries) {
