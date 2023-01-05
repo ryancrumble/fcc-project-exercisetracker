@@ -1,6 +1,10 @@
 import { HttpException } from '../errors/HTTPException.js';
 import exerciseModel from '../models/exercise.models.js';
-import { CreateExerciseRequest, ExerciseSchema } from '../types/exercise.js';
+import {
+    CreateExerciseRequest,
+    ExerciseSchema,
+    GetExercisesQueries,
+} from '../types/exercise.js';
 
 class ExercisesService {
     public exercises: typeof exerciseModel;
@@ -36,14 +40,64 @@ class ExercisesService {
         return await this.exercises.create(newExercise);
     }
 
-    public async getExercises(userId: string): Promise<ExerciseSchema[]> {
-        const exercises = await this.exercises.find({ userId }, { userId: 0 });
+    public async getExercises(username: string, queries: GetExercisesQueries) {
+        const { from, to, limit } = queries;
 
-        if (!exercises) {
-            throw new HttpException(204, 'No exercises found for the user');
+        // Validate from value
+        if (from && new Date(from).toString() === 'Invalid Date') {
+            throw new HttpException(
+                409,
+                'Invalid date provided to "from". Please check the date provided'
+            );
         }
 
-        return exercises;
+        // Validate to value
+        if (to && new Date(to).toString() === 'Invalid Date') {
+            throw new HttpException(
+                409,
+                'Invalid date provided to "to". Please check the date provided'
+            );
+        }
+
+        // Validate limit value
+        if (limit && isNaN(Number(limit))) {
+            throw new HttpException(
+                409,
+                'Incorrect value for limit. Please provide a number.'
+            );
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const filters: any = {
+            username,
+        };
+
+        if (from) {
+            filters.date = { $gte: new Date(from) };
+        }
+
+        if (to) {
+            filters.date = { ...filters.date, $lte: new Date(to) };
+        }
+
+        const _limit = limit ? Number(limit) : 0;
+
+        const getExercises = this.exercises
+            .find(filters, { _id: 0, username: 0 })
+            .limit(_limit);
+
+        const getCount = this.exercises
+            .find(filters, { _id: 0, username: 0 })
+            .limit(_limit)
+            .count();
+
+        const [exercises, count] = await Promise.all([getExercises, getCount]);
+
+        if (!exercises) {
+            throw new HttpException(204, 'No getExercises found for the user');
+        }
+
+        return { exercises, count };
     }
 }
 

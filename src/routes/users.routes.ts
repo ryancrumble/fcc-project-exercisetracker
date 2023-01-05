@@ -19,6 +19,10 @@ class UsersRoute implements Routes {
             this.path + '/:_id/exercises',
             this.usersController.createExercise
         );
+        this.router.get(
+            this.path + '/:_id/logs',
+            this.usersController.getExercises
+        );
     }
 }
 

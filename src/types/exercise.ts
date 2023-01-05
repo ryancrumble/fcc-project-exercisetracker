@@ -23,3 +23,9 @@ export interface UserLogsResponse {
     count: number;
     log: Exercise[];
 }
+
+export interface GetExercisesQueries {
+    from?: string;
+    to?: string;
+    limit?: string;
+}

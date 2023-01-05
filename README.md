@@ -18,9 +18,9 @@ Set up four endpoints (two POSTs, two GETs)
     - @return: { _id: string, username: string, date: string, duration: number,
       description: string }
 - **GET** to `/api/users/:_id/logs`
-    - @query: ?from {string} in format YYYY-MM_DD
-        - &to {string} in format YYYY-MM_DD
-        - &limit {string} in format YYYY-MM_DD
+    - @query: ?from {string} in format YYYY-MM-DD
+        - &to {string} in format YYYY-MM-DD
+        - &limit {string} in format YYYY-MM-DD
     - @return: { _id: string, username: string, count: number, logs: {
       description: string, duration: string, date: Date(_from dateString)_ }[] }
 

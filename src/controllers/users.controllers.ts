@@ -84,6 +84,40 @@ class UsersControllers {
             next(error);
         }
     };
+
+    public getExercises = async (
+        req: Request,
+        res: Response,
+        next: NextFunction
+    ) => {
+        try {
+            const userId = req.params._id;
+            const queries = req.query;
+
+            const user = await this.usersService.getUserById(userId);
+
+            if (!user) {
+                return new HttpException(409, 'No user found with the id.');
+            }
+
+            const { exercises, count } =
+                await this.exercisesService.getExercises(
+                    user.username,
+                    queries
+                );
+
+            const response = {
+                username: user.username,
+                _id: user._id,
+                count,
+                log: exercises,
+            };
+
+            res.status(200).json(response);
+        } catch (error) {
+            next(error);
+        }
+    };
 }
 
 export default UsersControllers;
