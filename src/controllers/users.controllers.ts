@@ -1,29 +1,34 @@
 import { NextFunction, Request, Response } from 'express';
-import UserService from '../services/users.service.js';
+import { HttpException } from '../errors/HTTPException.js';
+import ExercisesService from '../services/exercises.service.js';
+import UsersService from '../services/users.service.js';
+import { CreateExerciseResponse } from '../types/exercise.js';
 
 class UsersControllers {
-    public userService: UserService;
+    public exercisesService: ExercisesService;
+    public usersService: UsersService;
 
     constructor() {
-        this.userService = new UserService();
+        this.exercisesService = new ExercisesService();
+        this.usersService = new UsersService();
     }
 
-    public addUser = async (
+    public createUser = async (
         req: Request,
         res: Response,
         next: NextFunction
     ) => {
         try {
-            const userPayload = req.body;
-            const createUserData = await this.userService.createUser(
-                userPayload
-            );
+            const payload = req.body;
+
+            const createUserData = await this.usersService.createUser(payload);
 
             res.status(200).json(createUserData);
         } catch (error) {
             next(error);
         }
     };
+
     public getUserById = async (
         req: Request,
         res: Response,
@@ -32,7 +37,7 @@ class UsersControllers {
         try {
             const userId = req.params._id;
 
-            const userData = await this.userService.getUserById(userId);
+            const userData = await this.usersService.getUserById(userId);
 
             res.status(200).json(userData);
         } catch (error) {
@@ -46,9 +51,35 @@ class UsersControllers {
         next: NextFunction
     ) => {
         try {
-            const usersData = await this.userService.getUsers();
+            const usersData = await this.usersService.getUsers();
 
             res.status(200).json(usersData);
+        } catch (error) {
+            next(error);
+        }
+    };
+
+    public createExercise = async (
+        req: Request,
+        res: Response<CreateExerciseResponse>,
+        next: NextFunction
+    ) => {
+        try {
+            const payload = req.body;
+            const userId = req.params._id;
+
+            const user = await this.usersService.getUserById(userId);
+
+            if (!user) {
+                return new HttpException(409, 'No user found with the id.');
+            }
+
+            const exerciseData = await this.exercisesService.createExercise({
+                ...payload,
+                username: user.username,
+            });
+
+            res.status(200).json(exerciseData);
         } catch (error) {
             next(error);
         }

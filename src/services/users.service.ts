@@ -1,5 +1,5 @@
 import { HttpException } from '../errors/HTTPException.js';
-import userModel from '../models/users.models.js';
+import userModel from '../models/user.models.js';
 import { User } from '../types/users.js';
 
 class UsersService {
@@ -26,10 +26,8 @@ class UsersService {
         return await this.users.create(payload);
     }
 
-    public async getUserById(payload: string): Promise<User> {
-        // @TODO Validate payload
-
-        const user = await this.users.findById(payload);
+    public async getUserById(userId: string): Promise<User> {
+        const user = await this.users.findById(userId);
 
         if (!user) {
             throw new HttpException(204, 'No user found');

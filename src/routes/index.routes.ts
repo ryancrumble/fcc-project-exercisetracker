@@ -3,7 +3,7 @@ import IndexController from '../controllers/index.controllers.js';
 import { Routes } from '../types/routes.js';
 
 class IndexRoutes implements Routes {
-    public path = '/api';
+    public path = '/';
     public router = Router();
     public indexController = new IndexController();
 
